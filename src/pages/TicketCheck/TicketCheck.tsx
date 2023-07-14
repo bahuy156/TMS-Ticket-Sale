@@ -138,8 +138,8 @@ function TicketCheck() {
         </div>
       </div>
 
-      <div className="ticketfunnel">
-        <h3>Lọc vé</h3>
+      <div className="ticket-filter">
+        <h3 className="title-ticket-filter">Lọc vé</h3>
 
         <div className="check-status">
           <div className="check-input">

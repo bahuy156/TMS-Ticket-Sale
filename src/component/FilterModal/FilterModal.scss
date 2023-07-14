@@ -1,0 +1,130 @@
+.title-modal {
+  text-align: center;
+  font-family: Montserrat;
+}
+
+.date-modal {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 85px;
+  margin-top: 18px;
+
+  p {
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+  }
+
+  input {
+    padding: 7px 12px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: 1px solid #a5a8b1;
+    border-radius: 8px;
+    opacity: 0.699999988079071;
+  }
+}
+
+.usage-status-modal {
+  margin-top: 12px;
+}
+
+.title-usage {
+  margin-bottom: 3px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.usage-status-modal-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.usage-status-modal-input-child {
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 17px;
+    height: 17px;
+    margin-right: 4px;
+  }
+
+  span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    opacity: 0.699999988079071;
+  }
+}
+
+.checkin-modal {
+  margin-top: 15px;
+  padding-right: 80px;
+}
+
+.title-checkin {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.checkin-modal-input {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  margin-bottom: 6px;
+}
+
+.checkin-modal-input-child {
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 17px;
+    height: 17px;
+    margin-right: 4px;
+  }
+
+  span {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    opacity: 0.699999988079071;
+  }
+}
+
+.filter-modal-button {
+  margin-top: 35px;
+  text-align: center;
+
+  button {
+    padding: 7px 50px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    border: 1px solid #ff993c;
+    border-radius: 8px;
+    color: #ff993c;
+    background-color: #fff;
+    cursor: pointer;
+    transition: 0.2s linear;
+
+    &:hover {
+      color: #fff;
+      background-color: #ff993c;
+    }
+  }
+}

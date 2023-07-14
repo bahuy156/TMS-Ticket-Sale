@@ -1,9 +1,19 @@
 import "./TicketManage.scss";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFunnel } from "react-icons/bs";
+import { Modal } from "antd";
+import { useState } from "react";
+
 import SelectPage from "../../component/SelectPage/SelectPage";
+import FilterModal from "../../component/FilterModal/FilterModal";
 
 function TicketManage() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
   return (
     <div className="wrapper-ticket">
       <h2>Danh sách vé</h2>
@@ -15,7 +25,19 @@ function TicketManage() {
         </div>
 
         <div className="function-ticket">
-          <button className="funnel-button">
+          <div className="filter-modal">
+            <Modal
+              centered
+              open={modalOpen}
+              // onOk={() => setModalOpen(false)}
+              onCancel={() => setModalOpen(false)}
+              footer={null}
+              maskClosable={false}
+            >
+              <FilterModal />
+            </Modal>
+          </div>
+          <button className="filter-button" onClick={handleOpenModal}>
             <BsFunnel size={20} />
             <span>Lọc vé</span>
           </button>
