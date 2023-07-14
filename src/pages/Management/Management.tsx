@@ -1,5 +1,11 @@
+import "./Management.scss";
+
 function Management() {
-  return <h2>Quản lý thiết bị</h2>;
+  return (
+    <div className="wrapper-management">
+      <h2>Quản lý thiết bị</h2>
+    </div>
+  );
 }
 
 export default Management;

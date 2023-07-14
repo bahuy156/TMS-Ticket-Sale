@@ -1,3 +1,10 @@
+.wrapper-ticket {
+  height: 658px;
+  padding: 16px 16px 0 16px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
 .wrapper-header-ticket {
   display: flex;
   justify-content: space-between;
@@ -34,6 +41,7 @@
 }
 
 .function-ticket button {
+  font-family: Montserrat;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
@@ -43,6 +51,12 @@
   border: 1px solid #ff993c;
   border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s linear;
+
+  &:hover {
+    color: #fff;
+    background-color: #ff993c;
+  }
 }
 
 .funnel-button {

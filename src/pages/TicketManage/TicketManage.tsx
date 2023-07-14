@@ -1,6 +1,7 @@
 import "./TicketManage.scss";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFunnel } from "react-icons/bs";
+import SelectPage from "../../component/SelectPage/SelectPage";
 
 function TicketManage() {
   return (
@@ -135,27 +136,11 @@ function TicketManage() {
             <td>14/04/2021</td>
             <td>Cổng 1</td>
           </tr>
-
-          <tr>
-            <td>11</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>12</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
         </table>
+      </div>
+
+      <div className="select-page">
+        <SelectPage />
       </div>
     </div>
   );

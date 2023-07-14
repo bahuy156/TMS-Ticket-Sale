@@ -1,5 +1,11 @@
+import "./Setting.scss";
+
 function Setting() {
-  return <h2>Cài đặt</h2>;
+  return (
+    <div className="wrapper-setting">
+      <h2>Cài đặt</h2>
+    </div>
+  );
 }
 
 export default Setting;

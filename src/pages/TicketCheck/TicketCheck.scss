@@ -1,8 +1,27 @@
+.wrapper-ticketcheck {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticketcheck {
+  flex: 1;
+  height: 658px;
+  padding: 16px 16px 0 16px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.wrapper-header-ticketcheck {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
 .search-ticketcheck {
   display: flex;
   width: 384px;
   height: 48px;
-  margin-top: 20px;
   padding: 10px 16px;
   align-items: center;
   border-radius: 8px;
@@ -21,5 +40,177 @@
     color: #1e0d03;
     background-color: #f7f7f8;
     opacity: 0.30000001192092896;
+  }
+}
+
+.check-button button {
+  padding: 9px 20px;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px;
+  color: #fff;
+  background-color: #ff993c;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.1s linear;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  tr:nth-child(odd) {
+    background-color: #f7f8fb;
+  }
+
+  th {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+  }
+
+  td {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px;
+
+    &:first-child {
+      text-align: center;
+    }
+  }
+}
+
+.ticketfunnel {
+  margin-left: 20px;
+  height: 658px;
+  padding: 16px 16px 0 16px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.check-status {
+  margin-top: 27px;
+}
+
+.check-input {
+  display: flex;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+
+  p {
+    font-weight: 600;
+    line-height: 22px;
+    margin-right: 17px;
+  }
+}
+
+.check-input-child-type {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  input {
+    margin-right: 5px;
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.type-rangeday-check {
+  margin-top: 10px;
+
+  p {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+  }
+
+  input {
+    padding: 7px 12px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    color: #a5a8b1;
+    background-color: #f7f8fb;
+  }
+}
+
+.type-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  span {
+    margin-left: 103px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+.since-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  p {
+    margin-right: 96px;
+  }
+}
+
+.todate-check {
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-right: 83px;
+  }
+}
+
+.filter-check {
+  margin-top: 22px;
+  text-align: center;
+
+  button {
+    padding: 7px 45px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    border: 1px solid #ff993c;
+    border-radius: 4px;
+    color: #ff993c;
+    background-color: #fff;
+    cursor: pointer;
+    transition: 0.2s linear;
+
+    &:hover {
+      color: #fff;
+      background-color: #ff993c;
+    }
   }
 }
