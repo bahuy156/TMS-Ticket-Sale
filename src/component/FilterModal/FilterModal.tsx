@@ -1,6 +1,22 @@
 import "./FilterModal.scss";
+import { Radio } from "antd";
+import { DatePicker } from "antd";
 
-function FilterModal() {
+interface PropsFilter {
+  onChangeDateFrom: any;
+  onChangeDateTo: any;
+  status: any;
+  setStatus: any;
+  gateAll: any;
+  setGateAll: any;
+  gates: any;
+  onChangeGate: any;
+  onFilter: any;
+}
+
+function FilterModal(props: PropsFilter) {
+  const gateNumber = [1, 2, 3, 4, 5];
+
   return (
     <div className="wrapper-modal">
       <h1 className="title-modal">Lọc vé</h1>
@@ -8,33 +24,39 @@ function FilterModal() {
       <div className="date-modal">
         <div className="since-modal">
           <p>Từ ngày</p>
-          <input type="date" />
+          <DatePicker
+            placeholder="Chọn ngày"
+            className="date-modal-input"
+            format="DD/MM/YYYY"
+            onChange={props.onChangeDateFrom}
+          />
         </div>
         <div className="todate-modal">
           <p>Đến ngày</p>
-          <input type="date" />
+          <DatePicker
+            placeholder="Chọn ngày"
+            className="date-modal-input"
+            format="DD/MM/YYYY"
+            onChange={props.onChangeDateTo}
+          />
         </div>
       </div>
 
       <div className="usage-status-modal">
         <p className="title-usage">Tình trạng sử dụng</p>
         <div className="usage-status-modal-input">
-          <div className="usage-status-modal-input-child">
-            <input type="radio" />
-            <span>Tất cả</span>
-          </div>
-          <div className="usage-status-modal-input-child">
-            <input type="radio" />
-            <span>Đã sử dụng</span>
-          </div>
-          <div className="usage-status-modal-input-child">
-            <input type="radio" />
-            <span>Chưa sử dụng</span>
-          </div>
-          <div className="usage-status-modal-input-child">
-            <input type="radio" />
-            <span>Hết hạn</span>
-          </div>
+          <Radio.Group
+            name="radiogroup"
+            defaultValue={props.status}
+            onChange={(e) => {
+              props.setStatus(e.target.value);
+            }}
+          >
+            <Radio value="Tất cả">Tất cả </Radio>
+            <Radio value="Đã sử dụng">Đã sử dụng</Radio>
+            <Radio value="Chưa sử dụng">Chưa sử dụng</Radio>
+            <Radio value="Hết hạn">Hết hạn</Radio>
+          </Radio.Group>
         </div>
       </div>
 
@@ -42,36 +64,36 @@ function FilterModal() {
         <p className="title-checkin">Cổng Check - in</p>
         <div className="checkin-modal-input">
           <div className="checkin-modal-input-child">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={props.gateAll}
+              onChange={(e) => {
+                props.setGateAll(e.target.checked);
+              }}
+            />
             <span>Tất cả</span>
           </div>
-          <div className="checkin-modal-input-child">
-            <input type="checkbox" />
-            <span>Cổng 1</span>
-          </div>
-          <div className="checkin-modal-input-child">
-            <input type="checkbox" />
-            <span>Cổng 2</span>
-          </div>
-        </div>
 
-        <div className="checkin-modal-input">
-          <div className="checkin-modal-input-child">
-            <input type="checkbox" />
-            <span>Cổng 3</span>
-          </div>
-          <div className="checkin-modal-input-child">
-            <input type="checkbox" />
-            <span>Cổng 4</span>
-          </div>
-          <div className="checkin-modal-input-child">
-            <input type="checkbox" />
-            <span>Cổng 5</span>
-          </div>
+          {gateNumber.map((gateValue) => {
+            return (
+              <div key={gateValue} className="checkin-modal-input-child">
+                <input
+                  checked={
+                    props.gates.includes("Cổng" + gateValue) ? true : false
+                  }
+                  type="checkbox"
+                  value={"Cổng" + gateValue}
+                  disabled={props.gateAll}
+                  onChange={() => props.onChangeGate("Cổng" + gateValue)}
+                />
+                <span>Cổng {gateValue}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="filter-modal-button">
+      <div className="filter-modal-button" onClick={props.onFilter}>
         <button>Lọc</button>
       </div>
     </div>

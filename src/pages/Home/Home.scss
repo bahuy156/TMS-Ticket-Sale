@@ -4,3 +4,33 @@
   background-color: #fff;
   border-radius: 16px;
 }
+
+.header-chart {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 16x;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px;
+  }
+}
+
+.date-chart-input {
+  .ant-picker-input {
+    input {
+      width: 80px;
+    }
+  }
+
+  .ant-picker-suffix {
+    color: #ff993c;
+  }
+
+  &:hover {
+    border-color: #ff993c;
+  }
+}

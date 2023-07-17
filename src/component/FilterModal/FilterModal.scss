@@ -10,23 +10,27 @@
   margin-top: 18px;
 
   p {
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: 26px;
   }
+}
 
-  input {
-    padding: 7px 12px;
-    font-family: Montserrat;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    border: 1px solid #a5a8b1;
-    border-radius: 8px;
-    opacity: 0.699999988079071;
+.date-modal-input {
+  .ant-picker-input {
+    input {
+      width: 80px;
+    }
+  }
+
+  .ant-picker-suffix {
+    color: #ff993c;
+  }
+
+  &:hover {
+    border-color: #ff993c;
   }
 }
 
@@ -45,6 +49,7 @@
 .usage-status-modal-input {
   display: flex;
   justify-content: space-between;
+  margin-top: 6px;
 }
 
 .usage-status-modal-input-child {
@@ -81,18 +86,23 @@
 .checkin-modal-input {
   display: flex;
   justify-content: space-between;
-  margin-top: 4px;
+  flex-wrap: wrap;
+  row-gap: 12px;
+  margin-top: 6px;
   margin-bottom: 6px;
 }
 
 .checkin-modal-input-child {
   display: flex;
   align-items: center;
+  flex: 0 0 33.333%;
+  max-width: 33.333%;
 
   input {
     width: 17px;
     height: 17px;
     margin-right: 4px;
+    cursor: pointer;
   }
 
   span {

@@ -91,6 +91,7 @@ table {
     font-style: normal;
     font-weight: 600;
     line-height: 22px;
+    background-color: #f1f4f8;
   }
 
   td {
@@ -104,5 +105,33 @@ table {
   td {
     text-align: center;
     padding: 8px;
+  }
+
+  .notused,
+  .expired,
+  .used {
+    display: inline-block;
+    margin-top: 3px;
+    margin-left: 8px;
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+
+  .notused {
+    border: 1px solid #03ac00;
+    color: #03ac00;
+    background-color: #def7e0;
+  }
+
+  .expired {
+    border: 1px solid #fd5959;
+    color: #fd5959;
+    background-color: #f8ebe8;
+  }
+
+  .used {
+    border: 1px solid #919dba;
+    color: #919dba;
+    background-color: #eaf1f8;
   }
 }

@@ -2,16 +2,111 @@ import "./TicketManage.scss";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFunnel } from "react-icons/bs";
 import { Modal } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import db from "../../firebase/config";
 
 import SelectPage from "../../component/SelectPage/SelectPage";
 import FilterModal from "../../component/FilterModal/FilterModal";
+import { getDocs, collection, query, where } from "@firebase/firestore";
+
+import type { DatePickerProps } from "antd";
+
+interface FirebaseData {
+  id: string;
+  bookingcode: string;
+  checkin: string;
+  exportdate: string;
+  status: string;
+  ticketnumber: string;
+  usedate: string;
+}
 
 function TicketManage() {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [data, setData] = useState<FirebaseData[]>([]);
+  const ticketCollectionRef = collection(db, "ticket-list");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(ticketCollectionRef);
+
+      const fetchData: FirebaseData[] = [];
+
+      querySnapshot.docs.map((doc) => {
+        return fetchData.push({ id: doc.id, ...doc.data() } as FirebaseData);
+      });
+
+      setData(fetchData);
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleOpenModal = () => {
     setModalOpen(true);
+  };
+
+  // handle change date
+  const [dateFrom, setDateFrom] = useState<string>("");
+  const [dateTo, setDateTo] = useState<string>("");
+
+  const onChangeDateFrom: DatePickerProps["onChange"] = (date, dateString) => {
+    setDateFrom(dateString);
+    console.log(date, dateString);
+  };
+
+  const onChangeDateTo: DatePickerProps["onChange"] = (date, dateString) => {
+    setDateTo(dateString);
+    console.log(date, dateString);
+  };
+
+  const [status, setStatus] = useState("all");
+
+  const [gateAll, setGateAll] = useState(false);
+  const [gates, setGates] = useState<Array<String>>([]);
+
+  // handle change gates
+  const onChangeGate = (value: String) => {
+    const gateIndex = gates.findIndex((item) => item === value);
+
+    if (gateIndex !== -1) {
+      setGates([...gates.slice(0, gateIndex), ...gates.slice(gateIndex + 1)]);
+    } else {
+      setGates((prevState) => [...prevState, value]);
+    }
+  };
+
+  // clear gates
+  useEffect(() => {
+    if (gateAll) {
+      setGates([]);
+    }
+  }, [gateAll]);
+
+  // handle filter value
+  const onFilter = async () => {
+    const filterQuery = query(
+      ticketCollectionRef,
+      where("status", "==", status),
+      where("usedate", ">=", dateFrom),
+      where("usedate", "<=", dateTo)
+      // where("checkin", "array-contains", gates)
+    );
+
+    const querySnapshot = await getDocs(filterQuery);
+
+    const fetchData: FirebaseData[] = [];
+
+    querySnapshot.docs.map((doc) => {
+      return fetchData.push({ id: doc.id, ...doc.data() } as FirebaseData);
+    });
+
+    console.log(fetchData);
+
+    setData(fetchData);
+    setModalOpen(false);
   };
 
   return (
@@ -29,12 +124,21 @@ function TicketManage() {
             <Modal
               centered
               open={modalOpen}
-              // onOk={() => setModalOpen(false)}
               onCancel={() => setModalOpen(false)}
               footer={null}
               maskClosable={false}
             >
-              <FilterModal />
+              <FilterModal
+                onChangeDateFrom={onChangeDateFrom}
+                onChangeDateTo={onChangeDateTo}
+                status={status}
+                setStatus={setStatus}
+                gateAll={gateAll}
+                setGateAll={setGateAll}
+                gates={gates}
+                onChangeGate={onChangeGate}
+                onFilter={onFilter}
+              />
             </Modal>
           </div>
           <button className="filter-button" onClick={handleOpenModal}>
@@ -58,106 +162,29 @@ function TicketManage() {
             <th>Ngày xuất vé</th>
             <th>Cổng check - in</th>
           </tr>
+          {data.map((item, index) => {
+            let clStatus;
 
-          <tr>
-            <td>1</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
+            if (item.status === "Chưa sử dụng") {
+              clStatus = "notused";
+            } else if (item.status === "Hết hạn") {
+              clStatus = "expired";
+            } else if (item.status === "Đã sử dụng") {
+              clStatus = "used";
+            }
 
-          <tr>
-            <td>2</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>4</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>6</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>7</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>8</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>9</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
-
-          <tr>
-            <td>10</td>
-            <td>ALT20210501</td>
-            <td>123456789034</td>
-            <td>Chưa sử dụng</td>
-            <td>14/04/2021</td>
-            <td>14/04/2021</td>
-            <td>Cổng 1</td>
-          </tr>
+            return (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.bookingcode}</td>
+                <td>{item.ticketnumber}</td>
+                <td className={clStatus}>{item.status}</td>
+                <td>{item.usedate}</td>
+                <td>{item.exportdate}</td>
+                <td>{item.checkin}</td>
+              </tr>
+            );
+          })}
         </table>
       </div>
 
