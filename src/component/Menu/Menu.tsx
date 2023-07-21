@@ -6,8 +6,6 @@ import { publicRoutes } from "../../routes";
 import { BiHomeAlt } from "react-icons/bi";
 import { HiOutlineTicket } from "react-icons/hi";
 import { TbFileInvoice } from "react-icons/tb";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { FiMonitor } from "react-icons/fi";
 import { AiOutlineSetting } from "react-icons/ai";
 
 function Menu() {
@@ -34,16 +32,6 @@ function Menu() {
         </NavLink>
 
         <NavLink to={publicRoutes[3].path} className="nav-child">
-          <AiOutlineUnorderedList size={21} />
-          <span>Danh sách sự kiện</span>
-        </NavLink>
-
-        <NavLink to={publicRoutes[4].path} className="nav-child">
-          <FiMonitor size={21} />
-          <span>Quản lý thiết bị</span>
-        </NavLink>
-
-        <NavLink to={publicRoutes[5].path} className="nav-child">
           <AiOutlineSetting size={21} />
           <span>Cài đặt</span>
         </NavLink>

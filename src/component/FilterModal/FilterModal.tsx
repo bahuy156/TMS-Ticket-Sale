@@ -79,12 +79,12 @@ function FilterModal(props: PropsFilter) {
               <div key={gateValue} className="checkin-modal-input-child">
                 <input
                   checked={
-                    props.gates.includes("Cổng" + gateValue) ? true : false
+                    props.gates.includes("Cổng " + gateValue) ? true : false
                   }
                   type="checkbox"
-                  value={"Cổng" + gateValue}
+                  value={`Cổng ${gateValue}`}
                   disabled={props.gateAll}
-                  onChange={() => props.onChangeGate("Cổng" + gateValue)}
+                  onChange={() => props.onChangeGate("Cổng " + gateValue)}
                 />
                 <span>Cổng {gateValue}</span>
               </div>

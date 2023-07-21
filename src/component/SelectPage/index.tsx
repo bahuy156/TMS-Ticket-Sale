@@ -1,1 +1,1 @@
-export { default } from "./SelectPage";
+export { default } from "./SelectPageManage";

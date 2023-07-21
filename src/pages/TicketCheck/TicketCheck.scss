@@ -1,6 +1,13 @@
 .wrapper-ticketcheck {
+  position: relative;
   display: flex;
   justify-content: space-between;
+
+  .select-page {
+    position: absolute;
+    left: 30%;
+    bottom: 20px;
+  }
 }
 
 .ticketcheck {
@@ -9,6 +16,28 @@
   padding: 16px 16px 0 16px;
   background-color: #fff;
   border-radius: 16px;
+}
+
+.list-package-check {
+  display: flex;
+
+  .list-package-option-check {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-bottom: 5px solid #fff;
+    background-color: #fff;
+    cursor: pointer;
+    transition: 0.2s linear;
+  }
+
+  .active {
+    color: #ff993c;
+    border-bottom: 5px solid #ff993c;
+  }
 }
 
 .wrapper-header-ticketcheck {
@@ -52,46 +81,19 @@
   line-height: 22px;
   color: #fff;
   background-color: #ff993c;
-  border: none;
+  border: 1px solid #ff993c;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.1s linear;
+  transition: 0.2s linear;
 
   &:hover {
-    opacity: 0.8;
-  }
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-
-  tr:nth-child(odd) {
-    background-color: #f7f8fb;
+    color: #ff993c;
+    background-color: #fff;
+    border: 1px solid #ff993c;
   }
 
-  th {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 22px;
-  }
-
-  td {
-    font-size: 13px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-  }
-
-  th,
-  td {
-    text-align: left;
-    padding: 8px;
-
-    &:first-child {
-      text-align: center;
-    }
+  &:active {
+    opacity: 0.5;
   }
 }
 
@@ -107,8 +109,33 @@ table {
   font-family: Montserrat;
 }
 
+.select-package {
+  margin-top: 20px;
+  padding: 5px 12px 7px 12px;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  color: #7c7d95;
+  background-color: #f1f4f8;
+  cursor: pointer;
+
+  option {
+    padding: 3px 6px;
+
+    &:hover {
+      color: #fff;
+      background-color: #ff993c;
+    }
+  }
+}
+
 .check-status {
-  margin-top: 27px;
+  margin-top: 20px;
 }
 
 .check-input {
@@ -121,6 +148,32 @@ table {
     font-weight: 600;
     line-height: 22px;
     margin-right: 17px;
+  }
+}
+
+.check-radio {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    margin-bottom: 7px;
+    font-family: Montserrat;
+  }
+}
+
+.date-modal-input-check {
+  .ant-picker-input {
+    input {
+      width: 110px;
+    }
+  }
+
+  .ant-picker-suffix {
+    color: #ff993c;
+  }
+
+  &:hover {
+    border-color: #ff993c;
   }
 }
 
@@ -215,6 +268,10 @@ table {
     &:hover {
       color: #fff;
       background-color: #ff993c;
+    }
+
+    &:active {
+      opacity: 0.5;
     }
   }
 }

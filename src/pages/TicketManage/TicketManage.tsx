@@ -5,16 +5,19 @@ import { Modal } from "antd";
 import { useState, useEffect } from "react";
 import db from "../../firebase/config";
 
-import SelectPage from "../../component/SelectPage/SelectPage";
+import SelectPageManage from "../../component/SelectPage/SelectPageManage";
 import FilterModal from "../../component/FilterModal/FilterModal";
 import { getDocs, collection, query, where } from "@firebase/firestore";
 
 import type { DatePickerProps } from "antd";
+import TableFamily from "../../component/Tables/TableFamily";
+import TableEvent from "../../component/Tables/TableEvent";
 
 interface FirebaseData {
   id: string;
   bookingcode: string;
-  checkin: string;
+  eventname: string;
+  gate: string;
   exportdate: string;
   status: string;
   ticketnumber: string;
@@ -22,36 +25,70 @@ interface FirebaseData {
 }
 
 function TicketManage() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const [dateFrom, setDateFrom] = useState<string>("");
+  const [dateTo, setDateTo] = useState<string>("");
+
+  const [status, setStatus] = useState<string>("Tất cả");
+
+  const [gateAll, setGateAll] = useState<boolean>(false);
+  const [gates, setGates] = useState<Array<String>>([]);
+
+  const [pack, setPack] = useState<string>("family");
+  const [packOption, setPackOption] = useState<boolean>(false);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [actionFilter, setActionFilter] = useState<boolean>(false);
+
+  const [searchTicketNum, setSearchTicketNum] = useState<string>("");
+  
+  const [filteredData, setFilteredData] = useState<FirebaseData[]>([]);
 
   const [data, setData] = useState<FirebaseData[]>([]);
-  const ticketCollectionRef = collection(db, "ticket-list");
+  const ticketCollectionFamily = collection(db, "ticket-list");
+  const ticketCollectionEvent = collection(db, "ticket-list-event");
 
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(ticketCollectionRef);
-
-      const fetchData: FirebaseData[] = [];
-
-      querySnapshot.docs.map((doc) => {
-        return fetchData.push({ id: doc.id, ...doc.data() } as FirebaseData);
-      });
-
-      setData(fetchData);
-    };
-
-    fetchData();
+    getData(pack);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pack, actionFilter]);
 
+  const getData = async (value: string) => {
+    let q = query(
+      value === "family" ? ticketCollectionFamily : ticketCollectionEvent
+    );
+
+    if (status !== "Tất cả") {
+      q = query(q, where("status", "==", status));
+    }
+    if (dateFrom) {
+      q = query(q, where("usedate", ">=", dateFrom));
+    }
+    if (dateTo) {
+      q = query(q, where("usedate", "<=", dateTo));
+    }
+    if (!gateAll && gates.length) {
+      q = query(q, where("gate", "in", gates));
+    }
+
+    const querySnapshot = await getDocs(q);
+    const fetchDb: FirebaseData[] = [];
+
+    querySnapshot.docs.map((doc) => {
+      return fetchDb.push({ id: doc.id, ...doc.data() } as FirebaseData);
+    });
+
+    setData(fetchDb);
+  };
+
+  // handle open modal filter
   const handleOpenModal = () => {
     setModalOpen(true);
   };
 
   // handle change date
-  const [dateFrom, setDateFrom] = useState<string>("");
-  const [dateTo, setDateTo] = useState<string>("");
-
   const onChangeDateFrom: DatePickerProps["onChange"] = (date, dateString) => {
     setDateFrom(dateString);
     console.log(date, dateString);
@@ -61,11 +98,6 @@ function TicketManage() {
     setDateTo(dateString);
     console.log(date, dateString);
   };
-
-  const [status, setStatus] = useState("all");
-
-  const [gateAll, setGateAll] = useState(false);
-  const [gates, setGates] = useState<Array<String>>([]);
 
   // handle change gates
   const onChangeGate = (value: String) => {
@@ -86,36 +118,105 @@ function TicketManage() {
   }, [gateAll]);
 
   // handle filter value
-  const onFilter = async () => {
-    const filterQuery = query(
-      ticketCollectionRef,
-      where("status", "==", status),
-      where("usedate", ">=", dateFrom),
-      where("usedate", "<=", dateTo)
-      // where("checkin", "array-contains", gates)
-    );
-
-    const querySnapshot = await getDocs(filterQuery);
-
-    const fetchData: FirebaseData[] = [];
-
-    querySnapshot.docs.map((doc) => {
-      return fetchData.push({ id: doc.id, ...doc.data() } as FirebaseData);
-    });
-
-    console.log(fetchData);
-
-    setData(fetchData);
+  const onFilter = () => {
+    setActionFilter(!actionFilter);
     setModalOpen(false);
+  };
+
+  // handle active button list package
+  const handlePackage = (pack: string) => {
+    if (pack === "family") {
+      setPack("family");
+    } else if (pack === "event") {
+      setPack("event");
+    }
+  };
+
+  // hanlde change options
+  const handleChangeOptions = (option: string) => {
+    if (option === "family") {
+      setPackOption(false);
+    } else if (option === "event") {
+      setPackOption(true);
+    }
+  };
+
+  // handle change pages
+  const rowPerPage: number = 10
+
+  const indexOfLastRow = currentPage * rowPerPage
+  const indexOfFirstRow = indexOfLastRow - rowPerPage
+  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow)
+
+  const handleChangePages = (page: number) => {
+    setCurrentPage(page)
+  };
+
+  // search by ticket number 
+  useEffect(() => {
+    searchByTicketNum(searchTicketNum);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTicketNum]);
+
+  useEffect(() => {
+    // Khởi tạo trạng thái filteredData với dữ liệu gốc
+    setFilteredData(data);
+  }, [data]);
+
+  const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tickNum = e.target.value;
+    setSearchTicketNum(tickNum);
+  };
+
+  const searchByTicketNum = (ticketNum: string) => {
+    const searchData = data.filter((item) =>
+      item.ticketnumber.includes(ticketNum)
+    );
+    setFilteredData(searchData);
   };
 
   return (
     <div className="wrapper-ticket">
       <h2>Danh sách vé</h2>
 
+      <div className="list-package">
+        <button
+          className={
+            pack === "family"
+              ? "list-package-option active"
+              : "list-package-option"
+          }
+          onClick={() => {
+            handlePackage("family");
+            handleChangeOptions("family");
+          }}
+        >
+          Gói gia đình
+        </button>
+
+        <button
+          className={
+            pack === "event"
+              ? "list-package-option active"
+              : "list-package-option"
+          }
+          onClick={() => {
+            handlePackage("event");
+            handleChangeOptions("event");
+          }}
+        >
+          Gói sự kiện
+        </button>
+      </div>
+
       <div className="wrapper-header-ticket">
         <div className="search-ticket">
-          <input placeholder="Tìm bằng số vé" type="text" />
+          <input
+            value={searchTicketNum}
+            placeholder="Tìm bằng số vé"
+            type="text"
+            onChange={handleChangeEvent}
+          />
           <AiOutlineSearch size={28} style={{ cursor: "pointer" }} />
         </div>
 
@@ -141,10 +242,12 @@ function TicketManage() {
               />
             </Modal>
           </div>
+
           <button className="filter-button" onClick={handleOpenModal}>
             <BsFunnel size={20} />
             <span>Lọc vé</span>
           </button>
+
           <button className="export-button">
             <span>Xuất file (.csv)</span>
           </button>
@@ -152,44 +255,20 @@ function TicketManage() {
       </div>
 
       <div className="table-ticket">
-        <table>
-          <tr>
-            <th>STT</th>
-            <th>Booking code</th>
-            <th>Số vé</th>
-            <th>Tình trạng sử dụng</th>
-            <th>Ngày sử dụng</th>
-            <th>Ngày xuất vé</th>
-            <th>Cổng check - in</th>
-          </tr>
-          {data.map((item, index) => {
-            let clStatus;
-
-            if (item.status === "Chưa sử dụng") {
-              clStatus = "notused";
-            } else if (item.status === "Hết hạn") {
-              clStatus = "expired";
-            } else if (item.status === "Đã sử dụng") {
-              clStatus = "used";
-            }
-
-            return (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{item.bookingcode}</td>
-                <td>{item.ticketnumber}</td>
-                <td className={clStatus}>{item.status}</td>
-                <td>{item.usedate}</td>
-                <td>{item.exportdate}</td>
-                <td>{item.checkin}</td>
-              </tr>
-            );
-          })}
-        </table>
+        {!packOption ? (
+          <TableFamily data={currentRows} />
+        ) : (
+          <TableEvent data={currentRows} />
+        )}
       </div>
 
       <div className="select-page">
-        <SelectPage />
+        <SelectPageManage
+          data={filteredData}
+          currentPage={currentPage}
+          rowPerPage={rowPerPage}
+          handleChangePages={handleChangePages}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,17 @@
-.select-page {
-  margin-top: 30px;
-  text-align: center;
+.select-page-child {
+  ul {
+    .ant-pagination-item {
+      a {
+        font-family: Montserrat;
+      }
+    }
+
+    .ant-pagination-item-active {
+      border-color: #ff993c !important;
+
+      a {
+        color: #ff993c !important;
+      }
+    }
+  }
 }
