@@ -2,6 +2,14 @@
   border-collapse: collapse;
   width: 100%;
 
+  tr {
+    position: relative;
+
+    &:hover .icon-update-day {
+      opacity: 1;
+    }
+  }
+
   tr:nth-child(odd) {
     background-color: #f7f8fb;
   }
@@ -41,13 +49,35 @@
     border-radius: 4px;
   }
 
+  .notused-setting,
+  .expired-setting {
+    display: inline-block;
+    font-style: normal;
+    margin-top: 12px;
+    margin-left: 8px;
+    padding: 0 12px 0 0;
+    border-radius: 4px;
+  }
+
   .notused {
     border: 1px solid #03ac00;
     color: #03ac00;
     background-color: #def7e0;
   }
 
+  .notused-setting {
+    border: 1px solid #03ac00;
+    color: #03ac00;
+    background-color: #def7e0;
+  }
+
   .expired {
+    border: 1px solid #fd5959;
+    color: #fd5959;
+    background-color: #f8ebe8;
+  }
+
+  .expired-setting {
     border: 1px solid #fd5959;
     color: #fd5959;
     background-color: #f8ebe8;
@@ -70,7 +100,45 @@
   }
 }
 
+.icon-update-day {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 8px;
+  right: 30px;
+  color: #1e0d03;
+  opacity: 0;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+
 .status-content {
   display: flex;
   align-items: center;
+}
+
+.wrapper-update {
+  display: flex;
+  align-items: center;
+  color: #ff993c;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  p {
+    margin-top: 1px;
+    margin-left: 3px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.date-with-time {
+  display: flex;
+  flex-direction: column;
 }

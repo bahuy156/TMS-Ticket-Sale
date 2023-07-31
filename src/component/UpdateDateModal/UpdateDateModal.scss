@@ -1,0 +1,101 @@
+.wrapper-modal-updateday {
+  p {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 26px;
+    opacity: 0.699999988079071;
+  }
+
+  span {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.699999988079071;
+  }
+}
+
+.title-modal-updateday {
+  font-family: Montserrat;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.update-day {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+
+  p {
+    flex: 0 30%;
+  }
+
+  span {
+    flex: 0 70%;
+  }
+}
+
+.update-expiry-child {
+  .ant-picker-input {
+    input {
+      width: 85px;
+      height: 25px;
+      font-family: Montserrat;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+
+  .ant-picker-suffix {
+    color: #ff993c;
+  }
+
+  &:hover {
+    border-color: #ff993c;
+  }
+}
+
+.button-update-day {
+  margin-top: 35px;
+  text-align: center;
+
+  .button-update-day-first,
+  .button-update-day-second {
+    padding: 10px 50px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s linear;
+  }
+
+  .button-update-day-first {
+    margin-right: 15px;
+    color: #ff993c;
+    background-color: #fff;
+    border: 1px solid #ff993c;
+
+    &:hover {
+      color: #fff;
+      background-color: #ff993c;
+    }
+  }
+
+  .button-update-day-second {
+    color: #fff;
+    background-color: #ff993c;
+    border: 1px solid #ff993c;
+
+    &:hover {
+      color: #ff993c;
+      background-color: #fff;
+    }
+  }
+}

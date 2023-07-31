@@ -10,6 +10,11 @@ interface DataSets {
   backgroundColor: string[];
 }
 
+interface DoughnutProps {
+  unUse: number
+  haveUse: number
+}
+
 interface TypeChart {
   datasets: DataSets[];
 }
@@ -24,11 +29,11 @@ const chartData: TypeChart = {
   ],
 };
 
-function ChartDoughnut() {
+function ChartDoughnut(props: DoughnutProps) {
   const [chartDemo, setChartDemo] = useState<TypeChart>(chartData);
 
   useEffect(() => {
-    const data = [120, 250];
+    const data = [props.unUse, props.haveUse];
     const backgroundColors = [
       'rgba(255, 138, 72, 1)', //Cam
       'rgba(79, 117, 255, 1)', // Blue 
@@ -43,7 +48,7 @@ function ChartDoughnut() {
         },
       ],
     });
-  }, []);
+  }, [props.haveUse, props.unUse]);
 
   const options = {
     responsive: true,

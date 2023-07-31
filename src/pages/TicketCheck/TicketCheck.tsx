@@ -1,6 +1,6 @@
 import "./TicketCheck.scss";
 import { AiOutlineSearch } from "react-icons/ai";
-// import SelectPage from "../../component/SelectPage/SelectPage";
+import { BsChevronDown } from "react-icons/bs"
 import { Radio } from "antd";
 import { DatePicker } from "antd";
 import TableCheckFamily from "../../component/Tables/TableCheckFamily";
@@ -33,6 +33,7 @@ function TicketCheck() {
 
   const [status, setStatus] = useState<string>("Tất cả");
 
+  const [dateFrom, setDateFrom] = useState<string>("");
   const [dateTo, setDateTo] = useState<string>("");
 
   const [actionFilter, setActionFilter] = useState<boolean>(false);
@@ -55,6 +56,9 @@ function TicketCheck() {
 
     if (status !== "Tất cả") {
       q = query(q, where("status", "==", status));
+    }
+    if (dateFrom) {
+      q = query(q, where("usedate", ">=", dateFrom));
     }
     if (dateTo) {
       q = query(q, where("usedate", "<=", dateTo));
@@ -114,6 +118,11 @@ function TicketCheck() {
   };
 
   // handle change date
+  const onChangeDateFrom: DatePickerProps["onChange"] = (date, dateString) => {
+    setDateFrom(dateString);
+    console.log(date, dateString);
+  };
+
   const onChangeDateTo: DatePickerProps["onChange"] = (date, dateString) => {
     setDateTo(dateString);
     console.log(date, dateString);
@@ -129,7 +138,7 @@ function TicketCheck() {
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -208,9 +217,10 @@ function TicketCheck() {
 
         {selectOption ? (
           <div className="select-wrapper">
-            <select className="select-package" name="package" id="" disabled>
+            <select className="select-package" name="package" id="" disabled >
               <option value="">Hội chợ triển lãm tiêu dùng 2023</option>
             </select>
+              <BsChevronDown className="select-icon" size={15} />
           </div>
         ) : (
           <></>
@@ -240,10 +250,10 @@ function TicketCheck() {
             <div className="since-check">
               <p>Từ ngày</p>
               <DatePicker
-                disabled
                 placeholder="Chọn ngày"
                 className="date-modal-input-check"
                 format="DD/MM/YYYY"
+                onChange={onChangeDateFrom}
               />
             </div>
             <div className="todate-check">

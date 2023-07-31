@@ -1,13 +1,14 @@
-import { Chart, LineElement } from "chart.js/auto";
+/* eslint-disable array-callback-return */
 import { useEffect, useState } from "react";
+import { Chart, LineElement } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 
 Chart.register(LineElement);
 
-interface DataMonth {
-  day: string;
-  amount: string;
-}
+// interface DataMonth {
+//   day: string;
+//   amount: string;
+// }
 
 interface DataSets {
   label: string;
@@ -25,17 +26,80 @@ interface ChartData {
   datasets: DataSets[];
 }
 
-const dataList: DataMonth[] = [
-  { day: "Thứ 2", amount: "130.0" },
-  { day: "Thứ 3", amount: "186.0" },
-  { day: "Thứ 4", amount: "140.0" },
-  { day: "Thứ 5", amount: "248.0" },
-  { day: "Thứ 6", amount: "210.0" },
-  { day: "Thứ 7", amount: "278.0" },
-  { day: "CN", amount: "200.0" },
-];
+interface DataProps {
+  dataFamily: any;
+  dataDayOfMonth: any;
+}
 
-function LineChartComponent() {
+// const dataList1: DataMonth[] = [
+//   { day: "Thứ 4", amount: "186.0" },
+//   { day: "Thứ 4", amount: "140.0" },
+//   { day: "Thứ 4", amount: "248.0" },
+//   { day: "Thứ 5", amount: "210.0" },
+// ];
+
+function LineChartComponent(props: DataProps) {
+  const [dataList, setDataList] = useState<any[]>([]);
+
+  const dataDayOfMonth = props.dataDayOfMonth;
+
+  useEffect(() => {
+    const valueSort = dataDayOfMonth.sort(
+      (a: any, b: any) => parseFloat(a.usedate) - parseFloat(b.usedate)
+    );
+    console.log(valueSort);
+
+    const arrayDay: any[] = [[], [], [], [], [], []];
+
+    valueSort.map((item: any) => {
+      const daySplit = item.usedate.split("/")[0];
+
+      if (daySplit >= 1 && daySplit <= 5) {
+        arrayDay[0].push(item);
+      }
+      if (daySplit >= 6 && daySplit <= 10) {
+        arrayDay[1].push(item);
+      }
+      if (daySplit >= 11 && daySplit <= 15) {
+        arrayDay[2].push(item);
+      }
+      if (daySplit >= 16 && daySplit <= 20) {
+        arrayDay[3].push(item);
+      }
+      if (daySplit >= 21 && daySplit <= 25) {
+        arrayDay[4].push(item);
+      }
+      if (daySplit >= 26 && daySplit <= 31) {
+        arrayDay[5].push(item);
+      }
+    });
+
+    console.log(arrayDay);
+
+    setDataList(
+      arrayDay.map((listday: any, index: any) => {
+        return {
+          day:
+            index === 0
+              ? "01 - 05"
+              : index === 1
+              ? "06 - 10"
+              : index === 2
+              ? "11 - 15"
+              : index === 3
+              ? "16 - 20"
+              : index === 4
+              ? "21 - 25"
+              : "26 - 31",
+          amount: listday.reduce(
+            (prev: any, curr: any) => (prev += Number(curr.price)),
+            0
+          ),
+        };
+      })
+    );
+  }, [dataDayOfMonth]);
+
   const [chartData, setChartData] = useState<ChartData>({
     labels: [],
     datasets: [
@@ -51,6 +115,8 @@ function LineChartComponent() {
       },
     ],
   });
+
+  console.log(dataList);
 
   useEffect(() => {
     setChartData({
@@ -68,7 +134,7 @@ function LineChartComponent() {
         },
       ],
     });
-  }, []);
+  }, [dataList]);
 
   const createLinearGradient = () => {
     const ctx = document.createElement("canvas").getContext("2d");

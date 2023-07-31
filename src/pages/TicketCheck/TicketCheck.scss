@@ -109,9 +109,20 @@
   font-family: Montserrat;
 }
 
+.select-wrapper {
+  position: relative;
+
+  .select-icon {
+    position: absolute;
+    top: 26px;
+    right: 32px;
+    color: #ff993c;
+  }
+}
+
 .select-package {
   margin-top: 20px;
-  padding: 5px 12px 7px 12px;
+  padding: 5px 52px 7px 12px;
   font-family: Montserrat;
   font-size: 13px;
   font-style: normal;
@@ -123,6 +134,7 @@
   color: #7c7d95;
   background-color: #f1f4f8;
   cursor: pointer;
+  appearance: none;
 
   option {
     padding: 3px 6px;

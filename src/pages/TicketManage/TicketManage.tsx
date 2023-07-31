@@ -7,11 +7,17 @@ import db from "../../firebase/config";
 
 import SelectPageManage from "../../component/SelectPage/SelectPageManage";
 import FilterModal from "../../component/FilterModal/FilterModal";
-import { getDocs, collection, query, where } from "@firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+} from "@firebase/firestore";
 
 import type { DatePickerProps } from "antd";
 import TableFamily from "../../component/Tables/TableFamily";
 import TableEvent from "../../component/Tables/TableEvent";
+import UpdateDateModal from "../../component/UpdateDateModal/UpdateDateModal";
 
 interface FirebaseData {
   id: string;
@@ -26,6 +32,7 @@ interface FirebaseData {
 
 function TicketManage() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalUpdateOpen, setModalUpdateOpen] = useState<boolean>(false);
 
   const [dateFrom, setDateFrom] = useState<string>("");
   const [dateTo, setDateTo] = useState<string>("");
@@ -43,8 +50,13 @@ function TicketManage() {
   const [actionFilter, setActionFilter] = useState<boolean>(false);
 
   const [searchTicketNum, setSearchTicketNum] = useState<string>("");
-  
+
   const [filteredData, setFilteredData] = useState<FirebaseData[]>([]);
+
+  const [tkNumModalUpdate, setTkNumModalUpdate] = useState<string>("");
+
+  const [outUseDate, setOutUseDate] = useState<string>("");
+  const [idUpdateDate, setIdUpdateDate] = useState<string>('')
 
   const [data, setData] = useState<FirebaseData[]>([]);
   const ticketCollectionFamily = collection(db, "ticket-list");
@@ -53,7 +65,7 @@ function TicketManage() {
   useEffect(() => {
     getData(pack);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pack, actionFilter]);
+  }, [pack, actionFilter, modalUpdateOpen]);
 
   const getData = async (value: string) => {
     let q = query(
@@ -86,6 +98,14 @@ function TicketManage() {
   // handle open modal filter
   const handleOpenModal = () => {
     setModalOpen(true);
+  };
+
+  // handle open modal update day / transmission data modal update day
+  const handleOpenModalUpdate = (ticketNumber: string, outUseDate: string, id: string) => {
+    setTkNumModalUpdate(ticketNumber);
+    setModalUpdateOpen(!modalUpdateOpen);
+    setOutUseDate(outUseDate);
+    setIdUpdateDate(id)
   };
 
   // handle change date
@@ -142,17 +162,17 @@ function TicketManage() {
   };
 
   // handle change pages
-  const rowPerPage: number = 10
+  const rowPerPage: number = 10;
 
-  const indexOfLastRow = currentPage * rowPerPage
-  const indexOfFirstRow = indexOfLastRow - rowPerPage
-  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow)
+  const indexOfLastRow = currentPage * rowPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
 
   const handleChangePages = (page: number) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
   };
 
-  // search by ticket number 
+  // search by ticket number
   useEffect(() => {
     searchByTicketNum(searchTicketNum);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,11 +274,35 @@ function TicketManage() {
         </div>
       </div>
 
+      <div className="modal-update-day">
+        <Modal
+          centered
+          open={modalUpdateOpen}
+          footer={null}
+          maskClosable={false}
+          closeIcon
+        >
+          <UpdateDateModal
+            handleOpenModalUpdate={handleOpenModalUpdate}
+            tkNumModalUpdate={tkNumModalUpdate}
+            pack={pack}
+            useDate={outUseDate}
+            idDate={idUpdateDate}
+          />
+        </Modal>
+      </div>
+
       <div className="table-ticket">
         {!packOption ? (
-          <TableFamily data={currentRows} />
+          <TableFamily
+            data={currentRows}
+            handleOpenModalUpdate={handleOpenModalUpdate}
+          />
         ) : (
-          <TableEvent data={currentRows} />
+          <TableEvent
+            data={currentRows}
+            handleOpenModalUpdate={handleOpenModalUpdate}
+          />
         )}
       </div>
 
