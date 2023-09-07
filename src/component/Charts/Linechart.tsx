@@ -42,9 +42,16 @@ function LineChartComponent(props: DataProps) {
   const [dataList, setDataList] = useState<any[]>([]);
 
   const dataDayOfMonth = props.dataDayOfMonth;
+  const dataFamily = props.dataFamily
 
   useEffect(() => {
-    const valueSort = dataDayOfMonth.sort(
+    let dataToProcess = dataDayOfMonth
+
+    if (!dataDayOfMonth || dataDayOfMonth.legend === 0) {
+      dataToProcess = dataFamily
+    }
+
+    const valueSort = dataToProcess.sort(
       (a: any, b: any) => parseFloat(a.usedate) - parseFloat(b.usedate)
     );
     console.log(valueSort);
@@ -83,14 +90,14 @@ function LineChartComponent(props: DataProps) {
             index === 0
               ? "01 - 05"
               : index === 1
-              ? "06 - 10"
-              : index === 2
-              ? "11 - 15"
-              : index === 3
-              ? "16 - 20"
-              : index === 4
-              ? "21 - 25"
-              : "26 - 31",
+                ? "06 - 10"
+                : index === 2
+                  ? "11 - 15"
+                  : index === 3
+                    ? "16 - 20"
+                    : index === 4
+                      ? "21 - 25"
+                      : "26 - 31",
           amount: listday.reduce(
             (prev: any, curr: any) => (prev += Number(curr.price)),
             0
@@ -98,7 +105,7 @@ function LineChartComponent(props: DataProps) {
         };
       })
     );
-  }, [dataDayOfMonth]);
+  }, [dataDayOfMonth, dataFamily]);
 
   const [chartData, setChartData] = useState<ChartData>({
     labels: [],

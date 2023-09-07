@@ -6,7 +6,6 @@ import db from "../../firebase/config";
 import { getDocs, collection, query } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import type { DatePickerProps } from "antd";
-import dayjs from 'dayjs';
 
 interface FirebaseData {
   id: string;
@@ -37,7 +36,7 @@ function Home() {
   // handle fetch data
   useEffect(() => {
     fetchData("ticket-list");
-    fetchData( "ticket-list-event")
+    fetchData("ticket-list-event")
   }, []);
 
   const fetchData = async (value: any) => {
@@ -83,7 +82,7 @@ function Home() {
       setNewDataFamily(dataFamily)
       setNewDataEvent(dataEvent)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthDn])
 
   const unUseFm = newDataFamily.filter((item) => item.status === "Chưa sử dụng")
@@ -113,7 +112,7 @@ function Home() {
     } else {
       setDataDayOfMonth(dataFamily)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthLine])
 
   const onChangeMonthLine: DatePickerProps["onChange"] = (date, dateString) => {
@@ -122,10 +121,16 @@ function Home() {
 
   // handle calculate total
   useEffect(() => {
-      const total = dataDayOfMonth.reduce((prev: any, curr: any) => prev += curr.price, 0)
-      const newTotal = total.toLocaleString('en-US')
-      setTotalPrice(newTotal)
-  }, [dataDayOfMonth])
+    let dataProcess = dataDayOfMonth
+
+    if (!dataDayOfMonth || dataDayOfMonth.length === 0) {
+      dataProcess = dataFamily
+    }
+
+    const total = dataProcess.reduce((prev: any, curr: any) => prev += curr.price, 0)
+    const newTotal = total.toLocaleString('en-US')
+    setTotalPrice(newTotal)
+  }, [dataDayOfMonth, dataFamily])
 
   return (
     <div className="wrapper-home">
@@ -134,7 +139,6 @@ function Home() {
         <div className="header-chart">
           <p>Doanh thu</p>
           <DatePicker
-            defaultValue={dayjs('04, 2023', 'MM, YYYY')}
             picker="month"
             placeholder="Chọn tháng"
             className="date-chart-input"
